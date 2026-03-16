@@ -1,0 +1,13 @@
+@import './components.css';
+@import './fonts.css';
+@import './dishes.css';
+@import './basket.css';
+@import './defaults/standard.css';
+@import './defaults/sticky-footer.css';
+
+:root {
+  --light-peach: #fdeadc;
+  --dark-grey: #363534;
+  --pumpkin-orange: #e76c1f;
+  --muted-gray: #726d6d;
+}
