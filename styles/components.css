@@ -1,0 +1,9 @@
+.add-btn {
+  font-size: 1.6rem;
+  font-weight: 500;
+  background-color: white;
+  border-radius: 2rem;
+  width: 12.5rem;
+  height: 3rem;
+  align-items: center;
+}

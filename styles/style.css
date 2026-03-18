@@ -11,3 +11,277 @@
   --pumpkin-orange: #e76c1f;
   --muted-gray: #726d6d;
 }
+
+body {
+  color: var(--dark-grey);
+}
+
+header {
+  height: 12.8rem;
+  background-color: var(--pumpkin-orange);
+  display: flex;
+  align-items: center;
+}
+
+nav {
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hero {
+  position: relative;
+  margin-bottom: 12rem;
+}
+
+.hero-img {
+  width: 100%;
+  height: 50.8rem;
+  object-fit: cover;
+}
+
+.bg-lg {
+  position: absolute;
+  bottom: -11rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.hero-headline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-headline-wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.headline-w-ratings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.burger-house-headline {
+  font-family: Palanquin-Dark;
+  font-size: 4.8rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.word-burger {
+  color: var(--pumpkin-orange);
+}
+
+.ratings {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+  background-color: var(--light-peach);
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+}
+
+.rating-counter {
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: var(--muted-gray);
+  margin-left: 0.5rem;
+}
+
+.headline-sub-text {
+  font-family: Palanquin;
+  font-size: 2.4rem;
+  font-weight: 600;
+  text-align: center;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  margin-top: 1rem;
+}
+
+.meal-section-wrapper {
+  height: 6rem;
+  background-color: var(--pumpkin-orange);
+  display: flex;
+  align-items: center;
+  margin-top: 8rem;
+}
+
+.meal-section-wrapper .container {
+  display: flex;
+  align-items: center;
+}
+
+.meal-sandwich-headline {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 4rem;
+  font-weight: 600;
+  color: white;
+}
+
+.meal-icon {
+  display: block;
+}
+
+.meal-word-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.meal-content-wrapper {
+  margin-top: 2.5rem;
+}
+
+footer {
+  font-size: 1.8rem;
+  color: white;
+  background-color: var(--pumpkin-orange);
+  height: 12.8rem;
+  margin-top: 5rem;
+}
+
+.footer-content-wrapper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 12.8rem;
+  padding-top: 4rem;
+}
+
+.footer-container {
+  width: 90%;
+  max-width: 70rem;
+  margin: 0 auto;
+}
+
+.copyright {
+  margin-right: 0.5rem;
+}
+
+.copyright-container {
+  display: flex;
+}
+
+.hide-footer-mobile {
+  display: none;
+}
+
+@media (max-width: 565px) {
+  .hide-section-headline {
+    display: none;
+  }
+
+  .meal-section-wrapper {
+    margin-top: 10rem;
+  }
+
+  .meal-section-wrapper .container {
+    justify-content: center;
+  }
+
+  .meal-sandwich-headline {
+    width: 100%;
+    justify-content: center;
+    font-size: 3.2rem;
+  }
+
+  .meal-word-group {
+    position: relative;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .meal-icon {
+    position: absolute;
+    left: 50%;
+    bottom: 80%;
+    transform: translateX(-50%);
+    margin-bottom: 0.4rem;
+  }
+
+  .meal-word {
+    display: inline-block;
+    line-height: 1;
+  }
+}
+
+@media (max-width: 500px) {
+  .footer-content-wrapper {
+    flex-direction: column-reverse;
+    justify-content: space-around;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .hide-footer-mobile {
+    display: block;
+  }
+
+  .footer-mobile {
+    background-color: var(--dark-grey);
+    height: 7.8rem;
+    margin-top: 0rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+}
+
+@media (max-width: 375px) {
+  .hide {
+    display: none;
+  }
+}
+
+@media (max-width: 375px) {
+  .hide {
+    display: none;
+  }
+
+  .hero {
+    margin-bottom: 8rem;
+  }
+
+  .bg-lg {
+    bottom: -5rem;
+    width: 12rem;
+  }
+
+  .hero-img {
+    padding: 2rem;
+    border-radius: 4rem;
+    height: 34.6rem;
+    object-fit: cover;
+    object-position: 25%;
+  }
+
+  .burger-house-headline {
+    font-size: 4rem;
+  }
+
+  .headline-w-ratings {
+    flex-direction: column-reverse;
+  }
+
+  .headline-sub-text {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .headline-sub-text {
+    font-size: 2rem;
+  }
+}
