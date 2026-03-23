@@ -5,24 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bestell-App</title>
     <link rel="stylesheet" href="./styles/style.css" />
-    <script src="./script.js" defer></script>
     <script src="./scripts/db.js" defer></script>
     <script src="./scripts/template.js" defer></script>
+    <script src="./script.js" defer></script>
     <script src="./scripts/basket.js" defer></script>
   </head>
-
   <body>
     <header>
       <nav class="container" aria-label="Hauptnavigation">
         <img src="./assets/img/logo_2.svg" alt="BurgerHouse Logo" />
         <img
-          class="hide"
+          class="header-menu-icon"
           src="./assets/icons/burger-menu.svg"
           alt="Menü öffnen"
         />
       </nav>
     </header>
-
     <section class="hero">
       <img
         class="hero-img"
@@ -31,7 +29,6 @@
       />
       <img class="bg-lg" src="./assets/img/logo.svg" alt="BurgerHouse Emblem" />
     </section>
-
     <section class="hero-headline">
       <div class="container">
         <div class="hero-headline-wrapper">
@@ -39,7 +36,6 @@
             <h1 class="burger-house-headline">
               <span class="word-burger">Burger</span>House
             </h1>
-
             <div class="ratings">
               <img
                 class="star-icon"
@@ -49,122 +45,29 @@
               4,1 <span class="rating-counter">(317)</span>
             </div>
           </div>
-
           <p class="headline-sub-text">
             The best of Burgers, Pizza, and Greens, all in one great place.
           </p>
+          <div class="restaurant-facts" aria-label="Restaurant Informationen">
+            <span class="restaurant-fact">25-40 min</span>
+            <span class="restaurant-fact">Delivery 4,99 €</span>
+            <span class="restaurant-fact">Min. 15,00 €</span>
+          </div>
         </div>
       </div>
     </section>
-
     <main>
       <div class="content-wrapper container">
         <section class="site-content" aria-label="Speisekarte">
-          <section aria-labelledby="burger-section-heading">
-            <div class="meal-section-wrapper">
-              <div class="meal-sandwich-headline" id="burger-section-heading">
-                <div class="meal-word-group">
-                  <img
-                    class="meal-icon"
-                    src="./assets/icons/headline-burger.svg"
-                    alt="Burger Icon"
-                  />
-                  <span class="meal-word">Burger</span>
-                </div>
-                <span class="hide-section-headline">&amp; Sandwiches</span>
-              </div>
-            </div>
-
-            <div class="meal-content-wrapper">
-              <article class="meal-container">
-                <img
-                  src="./assets/img/b1.jpg"
-                  alt="Veggie mushroom black burger"
-                />
-
-                <div class="meal-content">
-                  <span class="meal-headline"
-                    >Veggie mushroom black burger</span
-                  >
-                  <p class="meal-info">
-                    Mixed green salad, Tomatoes, Edamame, Mushrooms
-                  </p>
-                </div>
-
-                <div class="price-and-btn">
-                  <span class="meal-price">16,90 €</span>
-                  <button class="add-btn" type="button">Add to basket</button>
-                </div>
-              </article>
-            </div>
-          </section>
-
-          <section aria-labelledby="pizza-section-heading">
-            <div class="meal-section-wrapper">
-              <div class="meal-sandwich-headline" id="pizza-section-heading">
-                <div class="meal-word-group">
-                  <img
-                    class="meal-icon"
-                    src="./assets/icons/headline-pizza.svg"
-                    alt="Pizza Icon"
-                  />
-                  <span class="meal-word">Pizza (30cm)</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="meal-content-wrapper">
-              <article class="meal-container">
-                <img
-                  src="./assets/img/b1.jpg"
-                  alt="Veggie mushroom black burger"
-                />
-
-                <div class="meal-content">
-                  <span class="meal-headline">Pizza Margherita</span>
-                  <p class="meal-info">Tomato sauce, mozzarella, basil</p>
-                </div>
-
-                <div class="price-and-btn">
-                  <span class="meal-price">11,90 €</span>
-                  <button class="add-btn" type="button">Add to basket</button>
-                </div>
-              </article>
-            </div>
-          </section>
-
-          <section aria-labelledby="salad-section-heading">
-            <div class="meal-section-wrapper">
-              <div class="meal-sandwich-headline" id="salad-section-heading">
-                <div class="meal-word-group">
-                  <img
-                    class="meal-icon"
-                    src="./assets/icons/headline-salat.svg"
-                    alt="Salat Icon"
-                  />
-                  <span class="meal-word">Salad</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="meal-content-wrapper">
-              <article class="meal-container">
-                <img src="./assets/img/b1.jpg" alt="Mini green salad" />
-
-                <div class="meal-content">
-                  <span class="meal-headline">Mini green Salad</span>
-                  <p class="meal-info">Mixed green salad, tomatoes, cucumber</p>
-                </div>
-
-                <div class="price-and-btn">
-                  <span class="meal-price">7,90 €</span>
-                  <button class="add-btn" type="button">Add to basket</button>
-                </div>
-              </article>
-            </div>
-          </section>
+          <nav
+            id="categorySlider"
+            class="category-slider"
+            aria-label="Gerichte Kategorien"
+          ></nav>
+          <div id="menuContent"></div>
         </section>
         <aside class="basket-wrapper" id="basketWrapper" aria-label="Warenkorb">
+          <div id="basketBackdrop" class="basket-backdrop"></div>
           <div class="basket">
             <div class="basket-header">
               <h2 class="basket-title">Your Basket</h2>
@@ -178,26 +81,14 @@
                 ×
               </button>
             </div>
-
-            <div class="basket-content basket-content-empty">
-              <div class="basket-empty-state">
-                <p class="basket-empty-text">
-                  Nothing here yet.<br />
-                  Go ahead and choose something delicious!
-                </p>
-
-                <img
-                  class="basket-empty-img"
-                  src="./assets/icons/shopping_cart.svg"
-                  alt="Leerer Warenkorb"
-                />
-              </div>
-            </div>
+            <div
+              id="basketContent"
+              class="basket-content basket-content-empty"
+            ></div>
           </div>
         </aside>
       </div>
     </main>
-
     <footer>
       <div class="footer-content-wrapper footer-container">
         <div class="copyright-container">
@@ -208,12 +99,10 @@
           />
           2026 BurgerHouse
         </div>
-
         <div class="imprint-container">Imprint</div>
         <div>Cookie Preferences</div>
       </div>
     </footer>
-
     <nav
       class="hide-footer-mobile footer-mobile"
       aria-label="Mobile Navigation"
@@ -221,18 +110,40 @@
       <button type="button" aria-label="Startseite">
         <span class="mobile-nav-icon icon-home"></span>
       </button>
-
       <button type="button" aria-label="Profil">
         <span class="mobile-nav-icon icon-person"></span>
       </button>
-
       <button type="button" aria-label="Bestellungen">
         <span class="mobile-nav-icon icon-orders"></span>
       </button>
-
-      <button id="mobileCartBtn" type="button" aria-label="Warenkorb">
+      <button
+        id="mobileCartBtn"
+        class="cart-nav-btn"
+        type="button"
+        aria-label="Warenkorb öffnen"
+      >
         <span class="mobile-nav-icon icon-cart"></span>
+        <span id="mobileCartCount" class="mobile-cart-count is-hidden">0</span>
       </button>
     </nav>
+    <dialog id="orderDialog" class="order-dialog">
+      <div class="order-dialog-card">
+        <button
+          id="orderDialogCloseBtn"
+          class="order-dialog-close-btn"
+          type="button"
+          aria-label="Dialog schließen"
+        >
+          ×
+        </button>
+        <img
+          class="order-dialog-img"
+          src="./assets/icons/order_confirm.svg"
+          alt="Lieferung unterwegs"
+        />
+        <h2 class="order-dialog-title">Order confirmed!</h2>
+        <p class="order-dialog-text">Your food is on the way!</p>
+      </div>
+    </dialog>
   </body>
 </html>

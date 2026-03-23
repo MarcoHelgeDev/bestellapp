@@ -1,11 +1,25 @@
 .add-btn {
+  min-width: 12.5rem;
+  height: 3.6rem;
+  padding: 0 1.4rem;
+  border: none;
+  border-radius: 2rem;
+  background-color: white;
+  color: var(--dark-grey);
   font-size: 1.6rem;
   font-weight: 500;
-  background-color: white;
-  border-radius: 2rem;
-  width: 12.5rem;
-  height: 3.6rem;
+  font-family: inherit;
   display: flex;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
+}
+
+.add-btn:hover {
+  filter: brightness(0.97);
+}
+
+.add-btn.is-added {
+  color: var(--pumpkin-orange);
+  font-weight: 700;
 }

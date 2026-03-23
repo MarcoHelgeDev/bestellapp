@@ -1,19 +1,17 @@
 .meal-container {
   width: 100%;
+  padding: 1rem 1.4rem;
   background-color: var(--light-peach);
   border-radius: 1.2rem;
-  padding: 1rem 1.4rem;
   display: flex;
-  align-items: stretch;
   gap: 1.6rem;
 }
 
 .meal-container img {
   width: 22rem;
   height: 12rem;
-  border-radius: 1.2rem;
   object-fit: cover;
-  display: block;
+  border-radius: 1.2rem;
   flex-shrink: 0;
 }
 
@@ -22,16 +20,15 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   padding-top: 0.2rem;
 }
 
 .meal-headline {
   display: block;
+  margin-bottom: 0.8rem;
   font-size: 2.4rem;
   font-weight: 600;
   line-height: 1.1;
-  margin-bottom: 0.8rem;
 }
 
 .meal-info {
@@ -42,12 +39,12 @@
 }
 
 .price-and-btn {
+  min-width: 13rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: flex-end;
+  justify-content: space-between;
   flex-shrink: 0;
-  min-width: 13rem;
 }
 
 .meal-price {
@@ -71,15 +68,14 @@
     width: 100%;
   }
 
-  .meal-headline {
-    font-size: 2.4rem;
-  }
-
   .price-and-btn {
     width: 100%;
+    display: flex;
     flex-direction: row;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
 
   .meal-price {
