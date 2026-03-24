@@ -1,31 +1,22 @@
-function getCategorySliderLinkTemplate(category) {
+function getCategorySliderLinkTemplate(sectionId, title) {
   return /*html*/ `
-    <a class="category-slider-link" href="#${category.sectionId}">
-      ${category.title}
+    <a class="category-slider-link" href="#${sectionId}">
+      ${title}
     </a>
   `;
 }
 
-function getCategorySubtitleTemplate(category) {
-  if (!category.subtitle) {
-    return '';
-  }
-
-  return `<span class="hide-section-headline">${category.subtitle}</span>`;
-}
-
-function getDishCardTemplate(dish) {
+function getDishCardTemplate(dishId, img, name, description, priceText) {
   return /*html*/ `
     <article class="meal-container">
-      <img src="${dish.img}" alt="${dish.name}" />
-
+      <img src="${img}" alt="${name}" />
       <div class="meal-content">
-        <span class="meal-headline">${dish.name}</span>
-        <p class="meal-info">${dish.description}</p>
+        <span class="meal-headline">${name}</span>
+        <p class="meal-info">${description}</p>
       </div>
       <div class="price-and-btn">
-        <span class="meal-price">${formatPrice(dish.price)}</span>
-        <button class="add-btn" type="button" data-dish-id="${dish.id}">
+        <span class="meal-price">${priceText}</span>
+        <button class="add-btn" type="button" data-dish-id="${dishId}">
           Add to basket
         </button>
       </div>
@@ -33,21 +24,23 @@ function getDishCardTemplate(dish) {
   `;
 }
 
-function getMenuSectionTemplate(category) {
-  let dishesHtml = '';
-
-  for (let i = 0; i < category.dishes.length; i++) {
-    dishesHtml += getDishCardTemplate(category.dishes[i]);
-  }
+function getMenuSectionTemplate(
+  sectionId,
+  headingId,
+  icon,
+  title,
+  subtitleHtml,
+  dishesHtml,
+) {
   return /*html*/ `
-    <section id="${category.sectionId}" aria-labelledby="${category.sectionId}-heading">
+    <section id="${sectionId}" aria-labelledby="${headingId}">
       <div class="meal-section-wrapper">
-        <div class="meal-sandwich-headline" id="${category.sectionId}-heading">
+        <div class="meal-sandwich-headline" id="${headingId}">
           <div class="meal-word-group">
-            <img class="meal-icon" src="${category.icon}" alt="${category.title} Icon" />
-            <span class="meal-word">${category.title}</span>
+            <img class="meal-icon" src="${icon}" alt="${title} Icon" />
+            <span class="meal-word">${title}</span>
           </div>
-          ${getCategorySubtitleTemplate(category)}
+          ${subtitleHtml}
         </div>
       </div>
       <div class="meal-content-wrapper">
@@ -73,11 +66,11 @@ function getBasketEmptyTemplate() {
   `;
 }
 
-function getBasketItemTemplate(item) {
+function getBasketItemTemplate(dishId, name, amount, totalPriceText) {
   return /*html*/ `
     <article class="basket-item">
       <div class="basket-item-top">
-        <span class="basket-item-name">${item.amount} x ${item.name}</span>
+        <span class="basket-item-name">${amount} x ${name}</span>
       </div>
       <div class="basket-item-bottom">
         <div class="basket-item-actions">
@@ -85,8 +78,8 @@ function getBasketItemTemplate(item) {
             class="basket-action basket-trash"
             type="button"
             data-basket-action="delete"
-            data-dish-id="${item.id}"
-            aria-label="${item.name} löschen"
+            data-dish-id="${dishId}"
+            aria-label="${name} löschen"
           >
             <span class="delete-icon"></span>
           </button>
@@ -94,97 +87,69 @@ function getBasketItemTemplate(item) {
             class="basket-action"
             type="button"
             data-basket-action="decrease"
-            data-dish-id="${item.id}"
+            data-dish-id="${dishId}"
             aria-label="Menge verringern"
           >
             -
           </button>
-          <span class="basket-quantity">${item.amount}</span>
+          <span class="basket-quantity">${amount}</span>
           <button
             class="basket-action"
             type="button"
             data-basket-action="increase"
-            data-dish-id="${item.id}"
+            data-dish-id="${dishId}"
             aria-label="Menge erhöhen"
           >
             +
           </button>
         </div>
         <span class="basket-item-price">
-          ${formatPrice(item.price * item.amount)}
+          ${totalPriceText}
         </span>
       </div>
     </article>
   `;
 }
 
-function getMinimumOrderHintTemplate(minimumOrder, missingAmount) {
-  if (missingAmount <= 0) {
-    return '';
-  }
-
-  return /*html*/ `
-    <p class="basket-minimum-order-note">
-      You are still ${formatPrice(missingAmount)} below the minimum order value of
-      ${formatPrice(minimumOrder)}.
-    </p>
-  `;
-}
-
 function getBasketSummaryTemplate(
-  subtotal,
-  deliveryFee,
-  total,
-  minimumOrder,
-  missingAmount,
+  subtotalText,
+  deliveryFeeText,
+  totalText,
+  minimumOrderHintHtml,
+  buyButtonDisabled,
 ) {
-  let minimumOrderReached = missingAmount <= 0;
-
   return /*html*/ `
     <div class="basket-summary">
       <div class="basket-summary-row">
         <span>Subtotal</span>
-        <span>${formatPrice(subtotal)}</span>
+        <span>${subtotalText}</span>
       </div>
       <div class="basket-summary-row">
         <span>Delivery fee</span>
-        <span>${formatPrice(deliveryFee)}</span>
+        <span>${deliveryFeeText}</span>
       </div>
       <div class="basket-summary-row basket-total-row">
         <span>Total</span>
-        <span>${formatPrice(total)}</span>
+        <span>${totalText}</span>
       </div>
-      ${getMinimumOrderHintTemplate(minimumOrder, missingAmount)}
+      ${minimumOrderHintHtml}
       <button
         class="basket-buy-btn"
         type="button"
         data-basket-action="buy"
-        ${minimumOrderReached ? '' : 'disabled'}
+        ${buyButtonDisabled}
       >
-        Buy now (${formatPrice(total)})
+        Buy now (${totalText})
       </button>
     </div>
   `;
 }
 
-function getBasketFilledTemplate(
-  itemsHtml,
-  subtotal,
-  deliveryFee,
-  total,
-  minimumOrder,
-  missingAmount,
-) {
+function getBasketFilledTemplate(itemsHtml, summaryHtml) {
   return /*html*/ `
     <div class="basket-items">
       ${itemsHtml}
     </div>
-    ${getBasketSummaryTemplate(
-      subtotal,
-      deliveryFee,
-      total,
-      minimumOrder,
-      missingAmount,
-    )}
+    ${summaryHtml}
   `;
 }

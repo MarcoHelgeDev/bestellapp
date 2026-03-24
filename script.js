@@ -28,7 +28,8 @@ function renderCategorySlider() {
   let html = '';
 
   for (let i = 0; i < restaurantData.categories.length; i++) {
-    html += getCategorySliderLinkTemplate(restaurantData.categories[i]);
+    let category = restaurantData.categories[i];
+    html += getCategorySliderLinkTemplate(category.sectionId, category.title);
   }
 
   categorySlider.innerHTML = html;
@@ -38,10 +39,50 @@ function renderMenu() {
   let html = '';
 
   for (let i = 0; i < restaurantData.categories.length; i++) {
-    html += getMenuSectionTemplate(restaurantData.categories[i]);
+    html += getMenuSectionHtml(restaurantData.categories[i]);
   }
 
   menuContent.innerHTML = html;
+}
+
+function getMenuSectionHtml(category) {
+  let headingId = category.sectionId + '-heading';
+  let subtitleHtml = getCategorySubtitleHtml(category.subtitle);
+  let dishesHtml = getDishesHtml(category.dishes);
+
+  return getMenuSectionTemplate(
+    category.sectionId,
+    headingId,
+    category.icon,
+    category.title,
+    subtitleHtml,
+    dishesHtml,
+  );
+}
+
+function getCategorySubtitleHtml(subtitle) {
+  if (!subtitle) {
+    return '';
+  }
+
+  return `<span class="hide-section-headline">${subtitle}</span>`;
+}
+
+function getDishesHtml(dishes) {
+  let html = '';
+
+  for (let i = 0; i < dishes.length; i++) {
+    let dish = dishes[i];
+    html += getDishCardTemplate(
+      dish.id,
+      dish.img,
+      dish.name,
+      dish.description,
+      formatPrice(dish.price),
+    );
+  }
+
+  return html;
 }
 
 function renderBasket() {
@@ -55,26 +96,69 @@ function renderBasket() {
     return;
   }
 
-  let itemsHtml = '';
+  basketContent.classList.remove('basket-content-empty');
+  basketContent.innerHTML = getBasketFilledTemplate(
+    getBasketItemsHtml(),
+    getBasketSummaryHtml(),
+  );
+}
+
+function getBasketItemsHtml() {
+  let html = '';
+
+  for (let i = 0; i < basket.length; i++) {
+    let item = basket[i];
+    html += getBasketItemTemplate(
+      item.id,
+      item.name,
+      item.amount,
+      formatPrice(item.price * item.amount),
+    );
+  }
+
+  return html;
+}
+
+function getBasketSummaryHtml() {
   let subtotal = getSubtotal();
   let deliveryFee = getDeliveryFee();
   let total = subtotal + deliveryFee;
   let minimumOrder = restaurantData.minimumOrder;
   let missingAmount = minimumOrder - subtotal;
-
-  for (let i = 0; i < basket.length; i++) {
-    itemsHtml += getBasketItemTemplate(basket[i]);
-  }
-
-  basketContent.classList.remove('basket-content-empty');
-  basketContent.innerHTML = getBasketFilledTemplate(
-    itemsHtml,
-    subtotal,
-    deliveryFee,
-    total,
+  let minimumOrderHintHtml = getMinimumOrderHintHtml(
     minimumOrder,
     missingAmount,
   );
+  let buyButtonDisabled = getBuyButtonDisabledAttribute(missingAmount);
+
+  return getBasketSummaryTemplate(
+    formatPrice(subtotal),
+    formatPrice(deliveryFee),
+    formatPrice(total),
+    minimumOrderHintHtml,
+    buyButtonDisabled,
+  );
+}
+
+function getMinimumOrderHintHtml(minimumOrder, missingAmount) {
+  if (missingAmount <= 0) {
+    return '';
+  }
+
+  return `
+    <p class="basket-minimum-order-note">
+      You are still ${formatPrice(missingAmount)} below the minimum order value of
+      ${formatPrice(minimumOrder)}.
+    </p>
+  `;
+}
+
+function getBuyButtonDisabledAttribute(missingAmount) {
+  if (missingAmount > 0) {
+    return 'disabled';
+  }
+
+  return '';
 }
 
 function handleMenuClick(event) {
@@ -84,8 +168,7 @@ function handleMenuClick(event) {
     return;
   }
 
-  const dishId = addButton.dataset.dishId;
-  addToBasket(dishId);
+  addToBasket(addButton.dataset.dishId);
 }
 
 function handleBasketClick(event) {
@@ -110,59 +193,62 @@ function handleBasketClick(event) {
 }
 
 function addToBasket(dishId) {
-  let basketItemIndex = getBasketItemIndex(dishId);
+  let basketItem = getBasketItemByDishId(dishId);
 
-  if (basketItemIndex !== -1) {
-    basket[basketItemIndex].amount++;
+  if (basketItem) {
+    basketItem.amount++;
   } else {
     let dish = getDishById(dishId);
-
-    basket.push({
-      id: dish.id,
-      name: dish.name,
-      price: dish.price,
-      amount: 1,
-    });
+    basket.push(getNewBasketItem(dish));
   }
 
   renderBasket();
 }
 
-function increaseAmount(dishId) {
-  let basketItemIndex = getBasketItemIndex(dishId);
+function getNewBasketItem(dish) {
+  return {
+    id: dish.id,
+    name: dish.name,
+    price: dish.price,
+    amount: 1,
+  };
+}
 
-  if (basketItemIndex === -1) {
+function increaseAmount(dishId) {
+  let basketItem = getBasketItemByDishId(dishId);
+
+  if (!basketItem) {
     return;
   }
 
-  basket[basketItemIndex].amount++;
+  basketItem.amount++;
   renderBasket();
 }
 
 function decreaseAmount(dishId) {
+  let basketItem = getBasketItemByDishId(dishId);
+
+  if (!basketItem) {
+    return;
+  }
+
+  if (basketItem.amount === 1) {
+    removeFromBasket(dishId);
+    return;
+  }
+
+  basketItem.amount--;
+  renderBasket();
+}
+
+function removeFromBasket(dishId) {
   let basketItemIndex = getBasketItemIndex(dishId);
 
   if (basketItemIndex === -1) {
     return;
   }
 
-  if (basket[basketItemIndex].amount === 1) {
-    removeFromBasket(dishId);
-    return;
-  }
-
-  basket[basketItemIndex].amount--;
-  renderBasket();
-}
-
-function removeFromBasket(dishId) {
-  for (let i = 0; i < basket.length; i++) {
-    if (basket[i].id === dishId) {
-      basket.splice(i, 1);
-      break;
-    }
-  }
-
+  basket.splice(basketItemIndex, 1);
   renderBasket();
 }
 
@@ -205,28 +291,41 @@ function updateDishButtons() {
   const addButtons = document.querySelectorAll('.add-btn');
 
   for (let i = 0; i < addButtons.length; i++) {
-    let button = addButtons[i];
-    let dishId = button.dataset.dishId;
-    let amount = getBasketAmountByDishId(dishId);
+    updateDishButton(addButtons[i]);
+  }
+}
 
-    if (amount === 0) {
-      button.textContent = 'Add to basket';
-      button.classList.remove('is-added');
-    } else {
-      button.textContent = 'Added ' + amount;
-      button.classList.add('is-added');
-    }
+function updateDishButton(button) {
+  let dishId = button.dataset.dishId;
+  let amount = getBasketAmountByDishId(dishId);
+
+  if (amount === 0) {
+    button.textContent = 'Add to basket';
+    button.classList.remove('is-added');
+  } else {
+    button.textContent = 'Added ' + amount;
+    button.classList.add('is-added');
   }
 }
 
 function getBasketAmountByDishId(dishId) {
-  for (let i = 0; i < basket.length; i++) {
-    if (basket[i].id === dishId) {
-      return basket[i].amount;
-    }
+  let basketItem = getBasketItemByDishId(dishId);
+
+  if (!basketItem) {
+    return 0;
   }
 
-  return 0;
+  return basketItem.amount;
+}
+
+function getBasketItemByDishId(dishId) {
+  let basketItemIndex = getBasketItemIndex(dishId);
+
+  if (basketItemIndex === -1) {
+    return null;
+  }
+
+  return basket[basketItemIndex];
 }
 
 function getBasketItemIndex(dishId) {

@@ -43,16 +43,20 @@ function handleBasketResize() {
   }
 }
 
-if (mobileCartBtn) {
-  mobileCartBtn.addEventListener('click', toggleBasket);
+function addBasketEventListeners() {
+  if (mobileCartBtn) {
+    mobileCartBtn.addEventListener('click', toggleBasket);
+  }
+
+  if (basketCloseBtn) {
+    basketCloseBtn.addEventListener('click', closeBasket);
+  }
+
+  if (basketBackdrop) {
+    basketBackdrop.addEventListener('click', closeBasket);
+  }
+
+  window.addEventListener('resize', handleBasketResize);
 }
 
-if (basketCloseBtn) {
-  basketCloseBtn.addEventListener('click', closeBasket);
-}
-
-if (basketBackdrop) {
-  basketBackdrop.addEventListener('click', closeBasket);
-}
-
-window.addEventListener('resize', handleBasketResize);
+addBasketEventListeners();
