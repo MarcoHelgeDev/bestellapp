@@ -90,6 +90,13 @@ function renderBasket() {
   updateDishButtons();
   updateMobileCartCount();
 
+  let basketItemsRef = basketContent.querySelector('.basket-items');
+  let basketScrollTop = 0;
+
+  if (basketItemsRef) {
+    basketScrollTop = basketItemsRef.scrollTop;
+  }
+
   if (basket.length === 0) {
     basketContent.classList.add('basket-content-empty');
     basketContent.innerHTML = getBasketEmptyTemplate();
@@ -101,6 +108,12 @@ function renderBasket() {
     getBasketItemsHtml(),
     getBasketSummaryHtml(),
   );
+
+  let newBasketItemsRef = basketContent.querySelector('.basket-items');
+
+  if (newBasketItemsRef) {
+    newBasketItemsRef.scrollTop = basketScrollTop;
+  }
 }
 
 function getBasketItemsHtml() {
