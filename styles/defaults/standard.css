@@ -78,13 +78,11 @@ select:focus-visible {
 }
 
 .container {
-  width: 90%;
-  max-width: 144rem;
+  width: min(100% - 6.4rem, 144rem);
   margin: 0 auto;
 }
 
 .container-small {
-  width: 90%;
-  max-width: 80rem;
+  width: min(100% - 6.4rem, 80rem);
   margin: 0 auto;
 }
